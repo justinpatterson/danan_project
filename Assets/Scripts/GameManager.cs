@@ -28,19 +28,29 @@ public class GameManager : MonoBehaviour {
 			s.questions = questionManager.questionSet.ToArray();
         */
 
-		/* STREAMING ASSETS VERSION
-			string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "QuestionData.json");
+		/* STREAMING ASSETS VERSION */
+			string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "QuestionData2.json");
 			Debug.Log(filePath);
-	        WWW data = new WWW(filePath);
-        */
+	        WWW data_streaming = new WWW(filePath);
+			/*WAIT UNTIL COMPLETE*/
+			while(!data_streaming.isDone) {  Debug.Log("Waiting for data streaming to complete..."); };
 
 		/* RESOURCES VERSION */
-		Object o = Resources.Load("Data/QuestionData");
-        TextAsset data = o as TextAsset;
+			//Object o = Resources.Load("Data/QuestionData");
+        	//TextAsset data_resources = o as TextAsset;
 
-        Debug.Log(data.text);
+        //Debug.Log(data.text);
 
-        s = JsonUtility.FromJson<QuestionListData>(data.text);
+		try
+		{
+        	s = JsonUtility.FromJson<QuestionListData>(data_streaming.text);
+		}
+		catch 
+		{
+			Debug.Log("Failed to load new questions");
+			s = new QuestionListData();
+			s.questions = questionManager.questionSet.ToArray();
+		}
         //Debug.Log(questionData.text);
         //Debug.Log(s.questions.Length);
         questionManager.questionSet = new List<Question>(s.questions);
