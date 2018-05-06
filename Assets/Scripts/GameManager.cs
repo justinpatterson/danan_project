@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public roundStates roundState = roundStates.notStarted;
     void Awake()
     {
+        //danan comment
         if(instance == null)
         {
             instance = this;
