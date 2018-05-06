@@ -24,13 +24,22 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
         QuestionListData s = new QuestionListData();
-        //s.questions = questionManager.questionSet.ToArray();
-        string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "QuestionData.json");
-        WWW data = new WWW(filePath);
-        Debug.Log(filePath);
-        //Object o = Resources.Load("Data/QuestionData");
-        //TextAsset ot = o as TextAsset;
+        /* HARDCODED VERSION
+			s.questions = questionManager.questionSet.ToArray();
+        */
+
+		/* STREAMING ASSETS VERSION
+			string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "QuestionData.json");
+			Debug.Log(filePath);
+	        WWW data = new WWW(filePath);
+        */
+
+		/* RESOURCES VERSION */
+		Object o = Resources.Load("Data/QuestionData");
+        TextAsset data = o as TextAsset;
+
         Debug.Log(data.text);
+
         s = JsonUtility.FromJson<QuestionListData>(data.text);
         //Debug.Log(questionData.text);
         //Debug.Log(s.questions.Length);
