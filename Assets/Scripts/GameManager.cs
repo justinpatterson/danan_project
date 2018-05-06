@@ -24,37 +24,26 @@ public class GameManager : MonoBehaviour {
             Destroy(gameObject);
         }
         QuestionListData s = new QuestionListData();
-        /* HARDCODED VERSION
-			s.questions = questionManager.questionSet.ToArray();
-        */
+        /* HARDCODED VERSION */
+		//	s.questions = questionManager.questionSet.ToArray();
+        /* */
 
 		/* STREAMING ASSETS VERSION */
-			string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "QuestionData2.json");
-			Debug.Log(filePath);
-	        WWW data_streaming = new WWW(filePath);
-			/*WAIT UNTIL COMPLETE*/
-			while(!data_streaming.isDone) {  Debug.Log("Waiting for data streaming to complete..."); };
+			string filePath = System.IO.Path.Combine(Application.streamingAssetsPath, "QuestionData.json");
+			string result = System.IO.File.ReadAllText( filePath );
+			s = JsonUtility.FromJson<QuestionListData>(result);
+			Debug.Log("RESULT: " + result);
+		/* */
 
 		/* RESOURCES VERSION */
-			//Object o = Resources.Load("Data/QuestionData");
-        	//TextAsset data_resources = o as TextAsset;
+		//	Object o = Resources.Load("Data/QuestionData");
+        // 	TextAsset data_resources = o as TextAsset;
+		//	s = JsonUtility.FromJson<QuestionListData>(data_resources.text);
+		/* */
 
-        //Debug.Log(data.text);
-
-		try
-		{
-        	s = JsonUtility.FromJson<QuestionListData>(data_streaming.text);
-		}
-		catch 
-		{
-			Debug.Log("Failed to load new questions");
-			s = new QuestionListData();
-			s.questions = questionManager.questionSet.ToArray();
-		}
-        //Debug.Log(questionData.text);
-        //Debug.Log(s.questions.Length);
         questionManager.questionSet = new List<Question>(s.questions);
     }
+
     [System.Serializable]
     public class QuestionListData
     {
